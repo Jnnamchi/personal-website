@@ -4,7 +4,26 @@
 		<h1>Welcome to John's website</h1>
 		<p>This is where dreams come true</p>
 		<button onclick="makeDreamComeTrue()">Make dream come true</button>
-	</div>
+    </div>
+    <div class="section">
+        <div class="section-title">
+            Craps Game
+        </div>
+        <div id="craps-registration-pane">
+            <div class="section-subtitle">
+                Enter username to begin
+            </div>
+            <div>
+                <input id="craps-username">
+            </div>
+            <div>
+                <button onclick="registerCrapsPlayer()">Make dream come true</button>
+            </div>
+        </div>
+        <div id="craps-main-pane">
+            Main game section
+        </div>
+    </div>
 </body>
 </html>
 
@@ -13,6 +32,11 @@
 body {
 	background-image: url("https://iso.500px.com/wp-content/uploads/2014/07/big-one.jpg");
 	background-size: cover;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -31,13 +55,36 @@ button:hover {
 	margin-top: 50px;
 }
 
+.section {
+    width: 100%;
+    border: solid white 1px;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.section-title {
+    font-size: 25px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+#craps-main-pane {
+    visibility: hidden;
+}
+
 </style>
 
 <script>
 
-function makeDreamComeTrue() {
-	document.body.style.background = 'url("https://media.giphy.com/media/HhTXt43pk1I1W/200.gif")';
-	document.getElementById("title").style.visibility = "hidden";
+function makeDreamComeTrue () {
+	document.body.style.background = 'url("https://media.giphy.com/media/HhTXt43pk1I1W/200.gif")'
+	document.getElementById('title').style.visibility = 'hidden'
+}
+
+function registerCrapsPlayer () {
+    let crapsUserName = document.getElementById('craps-username').value
+    document.getElementById('craps-registration-pane').style.visibility = 'hidden'
+    document.getElementById('craps-main-pane').style.visibility = 'visible'
 }
 
 </script>
