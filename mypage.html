@@ -5,7 +5,7 @@
 		<p>This is where dreams come true</p>
 		<button onclick="makeDreamComeTrue()">Make dream come true</button>
     </div>
-    <div class="section">
+    <div class="section craps-section">
         <div class="section-title">
             Craps Game
         </div>
@@ -24,8 +24,52 @@
             <div>
                 User: <span id="craps-username-greeting"></span>
             </div>
-            <div>
-                Main game section
+            <div class="craps-user-stats">
+                <div>
+                    Money Available: <span class="craps-user-money">1000</span>$
+                </div>
+                <div>
+                    Rounds Lasted: <span class="craps-user-rounds">0</span>
+                </div>
+            </div>
+            <div class="craps-bet-setup">
+                <div>
+                    <div>
+                        Bet:
+                    </div>
+                    <div id="craps-bet-pass" class="craps-bet-option" onclick="selectBet('PASS')">
+                        PASS
+                    </div>
+                    <div id="craps-bet-no-pass" class="craps-bet-option" onclick="selectBet('NO PASS')">
+                        NO PASS
+                    </div>
+                </div>
+                <div>
+                    Bet Amount: 100$
+                </div>
+            </div>
+            <div class="craps-dice-info">
+                <div>
+                    Dice 1: <span id="dice-roll-1"></span>
+                </div>
+                <div>
+                    Dice 2: <span id="dice-roll-2"></span>
+                </div>
+                <div>
+                    <span id="dice-roll-result"></span>
+                </div>
+            </div>
+            <div class="craps-bet-outcome">
+                <div>
+                    <span id="craps-result-description"></span>
+                </div>
+                <div id="craps-action-roll">
+                    <button>ROLL</button>
+                </div>
+                <div id="craps-action-continue-exit">
+                    <button>NEXT ROUND</button>
+                    <button>EXIT</button>
+                </div>
             </div>
         </div>
     </div>
@@ -73,7 +117,29 @@ button:hover {
     margin-bottom: 15px;
 }
 
+.craps-section {
+    color: white;
+}
+
 #craps-main-pane {
+    display: none;
+}
+
+.craps-bet-option {
+    border: solid white 1px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    padding: 10px;
+    display: inline-block;
+}
+
+.craps-bet-option:hover {
+    cursor: pointer;
+    background-color: red !important;
+}
+
+#craps-action-continue-exit {
     display: none;
 }
 
@@ -85,6 +151,14 @@ function makeDreamComeTrue () {
 	document.body.style.background = 'url("https://media.giphy.com/media/HhTXt43pk1I1W/200.gif")'
 	document.getElementById('title').style.display = 'none'
 }
+
+//////////////////////////////////////////////////
+//
+//                 Craps Section
+//
+//////////////////////////////////////////////////
+
+let selectedBet = 'PASS'
 
 function registerCrapsPlayer () {
     let crapsUsername = document.getElementById('craps-username').value
@@ -100,6 +174,33 @@ function registerCrapsPlayer () {
     document.getElementById('craps-username-greeting').innerHTML = crapsUsername
     document.getElementById('craps-registration-pane').style.display = 'none'
     document.getElementById('craps-main-pane').style.display = 'block'
+    setupRound()
+    selectBet('PASS')
 }
+
+function selectBet (bet) {
+    selectedBet = bet
+    if (bet === 'PASS') {
+        document.getElementById('craps-bet-pass').style.backgroundColor = 'red'
+        document.getElementById('craps-bet-no-pass').style.backgroundColor = 'transparent'
+        document.getElementById('craps-result-description').innerHTML = 'Bet PASS - Need a 7 or 11 to win!'
+    } else if (bet === 'NO PASS') {
+        document.getElementById('craps-bet-no-pass').style.backgroundColor = 'red'
+        document.getElementById('craps-bet-pass').style.backgroundColor = 'transparent'
+        document.getElementById('craps-result-description').innerHTML = 'Bet NO PASS - Need a 2, 3 or 12 to win!'
+    }
+}
+
+function setupRound () {
+    document.getElementById('dice-roll-1').innerHTML = '-'
+    document.getElementById('dice-roll-2').innerHTML = '-'
+    document.getElementById('dice-roll-result').innerHTML = 'WAITING TO ROLL'
+}
+
+//////////////////////////////////////////////////
+//
+//                End Craps Section
+//
+//////////////////////////////////////////////////
 
 </script>
