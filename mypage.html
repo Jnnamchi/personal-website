@@ -26,7 +26,7 @@
             </div>
             <div class="craps-user-stats">
                 <div>
-                    Money Available: <span id="craps-user-money">1000</span>$
+                    Money Available: <span id="craps-user-money">100</span>$
                 </div>
                 <div>
                     Rounds Lasted: <span id="craps-user-rounds">0</span>
@@ -59,7 +59,7 @@
                     <span id="craps-result-description"></span>
                 </div>
                 <div id="craps-action-roll">
-                    <button onclick="startDiceRoll()">ROLL</button>
+                    <button onclick="doFirstRoll()">ROLL</button>
                 </div>
                 <div id="craps-action-continue-exit">
                     <button onclick="setupRound()">NEXT ROUND</button>
@@ -160,11 +160,13 @@ function makeDreamComeTrue () {
 //
 //////////////////////////////////////////////////
 
-let moneyAvailable = 1000
+let moneyAvailable = 100
 let defaultBetAmount = 100
 let roundsLasted = 0
 let selectedBet = 'PASS'
 let roundIsOver = true
+
+// Game and Round Setup
 
 function registerCrapsPlayer () {
     let crapsUsername = document.getElementById('craps-username').value
@@ -211,6 +213,111 @@ function selectBet (bet) {
     }
 }
 
+// First Roll Handling
+
+function doFirstRoll () {
+    let [diceResult1, diceResult2] = startDiceRoll()
+
+    // Add small delay before calling function
+    setTimeout(function(){
+        handleFirstRoll(diceResult1, diceResult2)
+    }, 850)
+}
+
+function handleFirstRoll (diceResult1, diceResult2) {
+
+    let diceResultSum = diceResult1 + diceResult2
+    let diceResultName
+    if (diceResultSum === 7 || diceResultSum === 11) {
+        diceResultName = 'PASS'
+    } else if (diceResultSum === 2 || diceResultSum === 3 || diceResultSum === 12) {
+        diceResultName = 'NO PASS'
+    } else {
+        diceResultName = 'POINT SCORE'
+    }
+    document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: ' + diceResultName
+
+    if (diceResultName === 'POINT SCORE') {
+        document.getElementById('dice-roll-result').innerHTML += ', rolling again...'
+        let scoreToWin
+        let scoreToLose
+        if (selectedBet === 'PASS') {
+            scoreToWin = diceResultSum
+            scoreToLose = 7
+        } else {
+            scoreToWin = 7
+            scoreToLose = diceResultSum
+        }
+        document.getElementById('craps-result-description').innerHTML = 'Bet ' + selectedBet + ', need to roll a ' + scoreToWin + ' before a ' + scoreToLose + ' to win!'
+        setTimeout(function(){
+            doPointRoll(diceResultSum)
+        }, 3000)
+    } else {
+        settleRound(diceResultName)
+    }
+}
+
+// Point Roll Handling
+
+function doPointRoll (pointScore) {
+    let [diceResult1, diceResult2] = startDiceRoll()
+    let diceResultSum = diceResult1 + diceResult2
+
+    // Add small delay before calling function
+    setTimeout(function(){
+        if (diceResultSum === 7) {
+            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: NO PASS'
+            settleRound('NO PASS')
+        } else if (diceResultSum === pointScore) {
+            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: PASS'
+            settleRound('PASS')
+        } else {
+            console.log('rolling again')
+            doPointRoll(pointScore)
+        }
+    }, 1700)
+}
+
+// End Round / Game Management
+
+function settleRound (diceResultName) {
+    if (selectedBet === diceResultName) {
+        document.getElementById('craps-result-description').innerHTML = 'YOU WIN!'
+        moneyAvailable += defaultBetAmount
+    } else {
+        document.getElementById('craps-result-description').innerHTML = 'YOU LOSE :('
+        moneyAvailable -= defaultBetAmount
+    }
+
+    roundsLasted += 1
+    document.getElementById('craps-user-money').innerHTML = moneyAvailable
+    document.getElementById('craps-user-rounds').innerHTML = roundsLasted
+    document.getElementById('craps-action-continue-exit').style.display = 'block'
+
+    // If no more money, game is over
+    if (moneyAvailable === 0) {
+        endGame()
+    }
+}
+
+function endGame () {
+    alert('After lasting ' + roundsLasted + ' rounds, you have left with ' + moneyAvailable + '$ dollars!')
+    document.getElementById('craps-main-pane').style.display = 'none'
+    document.getElementById('craps-registration-pane').style.display = 'block'
+    roundIsOver = true
+
+    // Reset money and rounds
+    moneyAvailable = 1000
+    roundsLasted = 0
+    document.getElementById('craps-user-money').innerHTML = moneyAvailable
+    document.getElementById('craps-user-rounds').innerHTML = roundsLasted
+
+    // Remove everything inside the dice-roll-area
+    document.getElementById('dice-roll-area').innerHTML = ''
+}
+
+// Dice Rolling Utilities
+
 function startDiceRoll () {
     roundIsOver = false
 
@@ -221,8 +328,7 @@ function startDiceRoll () {
     let diceResult2 = getDiceResult()
     runDiceAnimation(diceResult1, diceResult2)
 
-    // TODO: Add small delay before calling function
-    setTimeout(function(){ endDiceRoll(diceResult1, diceResult2) }, 850)
+    return [diceResult1, diceResult2]
 }
 
 function getDiceResult () {
@@ -240,52 +346,6 @@ function runDiceAnimation (diceResult1, diceResult2) {
         delay: 100000000,
     }
     rollADie(options)
-}
-
-function endDiceRoll (diceResult1, diceResult2) {
-
-    let diceResultSum = diceResult1 + diceResult2
-    let diceResultName
-    if (diceResultSum === 7 || diceResultSum === 11) {
-        diceResultName = 'PASS'
-    } else if (diceResultSum === 2 || diceResultSum === 3 || diceResultSum === 12) {
-        diceResultName = 'NO PASS'
-    } else {
-        diceResultName = 'POINT SCORE'
-    }
-    document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: ' + diceResultName
-
-    if (diceResultName === 'POINT SCORE') {
-        document.getElementById('craps-result-description').innerHTML = 'NO WINNER FOR NOW'
-    } else {
-        if (selectedBet === diceResultName) {
-            document.getElementById('craps-result-description').innerHTML = 'YOU WIN!'
-            moneyAvailable += defaultBetAmount
-        } else {
-            document.getElementById('craps-result-description').innerHTML = 'YOU LOSE :('
-            moneyAvailable -= defaultBetAmount
-        }
-    }
-    roundsLasted += 1
-    document.getElementById('craps-user-money').innerHTML = moneyAvailable
-    document.getElementById('craps-user-rounds').innerHTML = roundsLasted
-    document.getElementById('craps-action-continue-exit').style.display = 'block'
-}
-
-function endGame () {
-    alert('After lasting ' + roundsLasted + ' rounds, you have left with ' + moneyAvailable + '$ dollars!')
-    document.getElementById('craps-main-pane').style.display = 'none'
-    document.getElementById('craps-registration-pane').style.display = 'block'
-    roundIsOver = true
-
-    // Reset money and rounds
-    moneyAvailable = 1000
-    roundsLasted = 0
-    document.getElementById('craps-user-money').innerHTML = moneyAvailable
-    document.getElementById('craps-user-rounds').innerHTML = roundsLasted
-
-    // Remove everything inside the dice-roll-area
-    document.getElementById('dice-roll-area').innerHTML = ''
 }
 
 //////////////////////////////////////////////////
