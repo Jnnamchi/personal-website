@@ -186,6 +186,20 @@ let roundsLasted = 0
 let selectedBet = 'PASS'
 let roundIsOver = true
 
+const diceResultPass = [7, 11]
+const diceResultNoPass = [2, 3, 12]
+const pointScoreNoPass = 7
+
+const timeouts = {
+    firstRoll: 850,
+    firstPointRoll: 3000,
+    nextPointRolls: 1700,
+}
+
+const PASS = 'PASS'
+const NO_PASS = 'NO PASS'
+const POINT_SCORE = 'POINT_SCORE'
+
 // Game and Round Setup
 
 function registerCrapsPlayer () {
@@ -226,14 +240,14 @@ function setupRound () {
 function selectBet (bet) {
     if (roundIsOver) {
         selectedBet = bet
-        if (bet === 'PASS') {
+        if (bet === PASS) {
             document.getElementById('craps-bet-pass').style.backgroundColor = 'red'
             document.getElementById('craps-bet-no-pass').style.backgroundColor = 'transparent'
-            document.getElementById('craps-result-description').innerHTML = 'Bet PASS - Need a 7 or 11 to win!'
-        } else if (bet === 'NO PASS') {
+            document.getElementById('craps-result-description').innerHTML = 'Bet ' + PASS + ' - Need one of ' + diceResultPass.join(', ') + ' to win!'
+        } else if (bet === NO_PASS) {
             document.getElementById('craps-bet-no-pass').style.backgroundColor = 'red'
             document.getElementById('craps-bet-pass').style.backgroundColor = 'transparent'
-            document.getElementById('craps-result-description').innerHTML = 'Bet NO PASS - Need a 2, 3 or 12 to win!'
+            document.getElementById('craps-result-description').innerHTML = 'Bet ' + NO_PASS + ' - Need one of ' + diceResultNoPass.join(', ') + ' to win!'
         }
     }
 }
@@ -255,42 +269,42 @@ function increaseBet () {
 // First Roll Handling
 
 function doFirstRoll () {
-    let [diceResult1, diceResult2] = startDiceRoll()
+    let diceResultSum = startDiceRoll()
 
     // Add small delay before calling function
     setTimeout(function(){
-        handleFirstRoll(diceResult1, diceResult2)
-    }, 850)
+        handleFirstRoll(diceResultSum)
+    }, timeouts.firstRoll)
 }
 
-function handleFirstRoll (diceResult1, diceResult2) {
+function handleFirstRoll (diceResultSum) {
 
-    let diceResultSum = diceResult1 + diceResult2
     let diceResultName
-    if (diceResultSum === 7 || diceResultSum === 11) {
-        diceResultName = 'PASS'
-    } else if (diceResultSum === 2 || diceResultSum === 3 || diceResultSum === 12) {
-        diceResultName = 'NO PASS'
+    if (diceResultPass.includes(diceResultSum)) {
+        diceResultName = PASS
+    } else if (diceResultNoPass.includes(diceResultSum)) {
+        diceResultName = NO_PASS
     } else {
-        diceResultName = 'POINT SCORE'
+        diceResultName = POINT_SCORE
     }
+    // Above conditional needed to set the dice result in the roll result section
     document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: ' + diceResultName
 
-    if (diceResultName === 'POINT SCORE') {
+    if (diceResultName === POINT_SCORE) {
         document.getElementById('dice-roll-result').innerHTML += ', rolling again...'
         let scoreToWin
         let scoreToLose
-        if (selectedBet === 'PASS') {
+        if (selectedBet === PASS) {
             scoreToWin = diceResultSum
-            scoreToLose = 7
+            scoreToLose = pointScoreNoPass
         } else {
-            scoreToWin = 7
+            scoreToWin = pointScoreNoPass
             scoreToLose = diceResultSum
         }
         document.getElementById('craps-result-description').innerHTML = 'Bet ' + selectedBet + ', need to roll a ' + scoreToWin + ' before a ' + scoreToLose + ' to win!'
         setTimeout(function(){
             doPointRoll(diceResultSum)
-        }, 3000)
+        }, timeouts.firstPointRoll)
     } else {
         settleRound(diceResultName)
     }
@@ -299,22 +313,20 @@ function handleFirstRoll (diceResult1, diceResult2) {
 // Point Roll Handling
 
 function doPointRoll (pointScore) {
-    let [diceResult1, diceResult2] = startDiceRoll()
-    let diceResultSum = diceResult1 + diceResult2
+    let diceResultSum = startDiceRoll()
 
     // Add small delay before calling function
     setTimeout(function(){
-        if (diceResultSum === 7) {
-            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: NO PASS'
-            settleRound('NO PASS')
+        if (diceResultSum === pointScoreNoPass) {
+            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: ' + NO_PASS
+            settleRound(NO_PASS)
         } else if (diceResultSum === pointScore) {
-            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: PASS'
-            settleRound('PASS')
+            document.getElementById('dice-roll-result').innerHTML = 'Sum: ' + diceResultSum + ', Result: ' + PASS
+            settleRound(PASS)
         } else {
-            console.log('rolling again')
             doPointRoll(pointScore)
         }
-    }, 1700)
+    }, timeouts.nextPointRolls)
 }
 
 // End Round / Game Management
@@ -365,23 +377,24 @@ function startDiceRoll () {
 
     let diceResult1 = getDiceResult()
     let diceResult2 = getDiceResult()
-    runDiceAnimation(diceResult1, diceResult2)
+    let diceResults = [diceResult1, diceResult2]
+    runDiceAnimation(diceResults)
 
-    return [diceResult1, diceResult2]
+    return diceResult1 + diceResult2
 }
 
 function getDiceResult () {
     return Math.floor(Math.random() * 6) + 1
 }
 
-function runDiceAnimation (diceResult1, diceResult2) {
+function runDiceAnimation (diceResults) {
     const element = document.getElementById('dice-roll-area')
-    const numberOfDice = 2
+    const numberOfDice = diceResults.length
     const options = {
         element, // element to display the animated dice in.
         numberOfDice, // number of dice to use
         callback: function(){}, // Run nothing
-        values: [diceResult1, diceResult2],
+        values: diceResults,
         delay: 100000000,
     }
     rollADie(options)
