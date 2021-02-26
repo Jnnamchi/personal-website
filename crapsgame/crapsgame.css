@@ -1,0 +1,45 @@
+.craps-section {
+    color: white;
+}
+
+#craps-main-pane {
+    display: none;
+}
+
+.craps-bet-option {
+    border: solid white 1px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    padding: 10px;
+    display: inline-block;
+}
+
+.craps-bet-option:hover {
+    cursor: pointer;
+    background-color: red !important;
+}
+
+#craps-bet-amount {
+    user-select: none;
+}
+
+.craps-bet-change {
+    margin: 0 10px;
+    font-size: 24px;
+    user-select: none;
+}
+
+.craps-bet-change:hover {
+    cursor: pointer;
+}
+
+#dice-roll-area {
+    width: 200px;
+    height: 200px;
+    background-color: green;
+}
+
+#craps-action-continue-exit {
+    display: none;
+}
