@@ -1,5 +1,7 @@
 .craps-section {
     color: white;
+    background-image: url("../images/vegas.jpg");
+    background-position: center top;
 }
 
 #craps-main-pane {
