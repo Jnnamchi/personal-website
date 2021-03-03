@@ -5,7 +5,7 @@
     <script type="text/javascript" src="crapsgame/crapsgame.js"></script>
 </head>
 <body>
-	<div id="title">
+	<div class="section" id="title">
 		<h1>Welcome to John's website</h1>
 		<p>This is where dreams come true</p>
 		<button onclick="makeDreamComeTrue()">Make dream come true</button>
@@ -104,14 +104,12 @@ button:hover {
 }
 
 #title {
-	width: 100%;
 	text-align: center;
-	margin-top: 50px;
 }
 
 .section {
-    width: 100%;
-    border: solid white 1px;
+    width: 100vw;
+    height: 100vh;
     padding: 25px;
     box-sizing: border-box;
 }
@@ -127,8 +125,8 @@ button:hover {
 <script>
 
 function makeDreamComeTrue () {
+    document.body.innerHTML = ""
 	document.body.style.background = 'url("https://media.giphy.com/media/HhTXt43pk1I1W/200.gif")'
-	document.getElementById('title').style.display = 'none'
 }
 
 </script>
