@@ -1,0 +1,105 @@
+<html>
+<body>
+	<div id="title">
+		<h1>What Happens in Vegas Stays in Vegas</h1>
+		<p>This is where dreams come true</p>
+		<button onclick="makeDreamComeTrue()">Make dream come true</button>
+	</div>
+	<div class="Section">
+		<div class="Section-title">
+			Craps Game
+		</div>
+        <div id= "craps-registration-pane">
+            <div class="Section-subtitle">
+                Enter username to begin
+            </div>
+            <div>
+                <input id="craps-username">
+            </div>
+            <div>
+                <button onclick="registerCrapsPlayer ()">Continue</button>
+            </div>
+		</div>
+        <div id= "craps-main-pane">
+            <div>
+                User: <span id="craps-username-greeting"></span>
+            </div>
+            <div>
+                Main game section
+            </div>
+        </div>
+	</div>
+</body>
+</html>
+
+<style>
+
+body {
+    background-image: url("https://g.foolcdn.com/editorial/images/600161/las-vegas-sign-at-dusk.jpg");
+    background-size: cover;
+}
+
+body, html {
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	color: black;
+}
+
+Button:hover {
+	background-color: red;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+#title {
+	width: 100%;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.section {
+	width: 100%;
+	border: solid white 1px;
+	padding: 25px;
+	box-sizing: border-box;
+}
+
+.section-title {
+	font-size: 25px;
+	color: white;
+	margin-bottom: 15px;
+}
+
+#craps-main-pane {
+	display: none;
+}
+
+</style>
+
+<script>
+
+function makeDreamComeTrue() {
+	document.body.style.background = 'url("https://media4.giphy.com/media/3o6MbqNPaatT8nnEmk/giphy.gif")';
+    document.body.innerHTML = ""
+}
+
+function registerCrapsPlayer (){
+	let crapsUserName = document.getElementById("craps-username").value
+
+	let invalidCharacterPattern = /^[0-9]|[^a-zA*Z0-0_]/g
+
+	let usernameIsInvalid = crapsUserName.length < 5
+	if (usernameIsInvalid || invalidCharacterPattern.test(crapsUserName)) {
+		crapsUserName = "User123"
+		alert("Username must be at least 5 characters, no spaces, cannot start with number: " + crapsUserName)
+	}
+
+	document.getElementById("craps-username-greeting").innerHTML = crapsUserName
+	document.getElementById("craps-registration-pane").style.display = 'none'
+	document.getElementById("craps-main-pane").style.display = 'block'
+}
+
+</script>
