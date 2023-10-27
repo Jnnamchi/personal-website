@@ -73,18 +73,8 @@
 
 .craps-on-table-container {
     margin-top: calc(var(--height-scale) * 0.21);
-    font-size: calc(var(--height-scale) * 0.035);
+    font-size: calc(var(--height-scale) * 0.03);
     text-align: center;
-}
-
-.craps-roll-dice-container {
-    width: fit-content;
-    margin: 0 auto;
-}
-
-.craps-roll-dice-container:hover {
-    cursor: pointer;
-    transform: scale(1.1);
 }
 
 .craps-round-manager {
@@ -93,6 +83,16 @@
     position: absolute;
     bottom: calc(var(--height-scale) * 0.04);
     font-size: calc(var(--height-scale) * 0.04);
+}
+
+.craps-roll-dice-container {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.craps-roll-dice-container:hover {
+   cursor: pointer;
+   transform: scale(1.1);
 }
 
 .craps-betting-grid {
