@@ -149,3 +149,12 @@
     border-left: solid white 2px;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+#craps-next-round-button-disabled {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: grey;
+}
+
+#craps-next-round-button-disabled:hover {
+    cursor: not-allowed;
+}
