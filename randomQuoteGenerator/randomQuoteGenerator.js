@@ -18,24 +18,18 @@ function getRandomColorCombo () {
   return colors[randomIndex]
 }
 
-function getNewRandomQuote () {
-	fetch('https://api.quotable.io/quotes/random')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    const colorCombo = getRandomColorCombo()
-    randomQuoteGeneratorElement.style.background = 'linear-gradient(45deg, ' + colorCombo[0] + ', ' + colorCombo[1]+ ')'
-    const quoteText = data[0].content
-    const quoteAuthor = data[0].author
-    document.getElementById('random-quote-text').innerHTML = quoteText
-    document.getElementById('random-quote-author').innerHTML = quoteAuthor
-  })
-  .catch(error => {
-    // Handle errors here
+async function getNewRandomQuote () {
+  const response = await fetch('https://api.quotable.io/quotes/random')
+  if (!response.ok) {
     alert('There was a problem getting a new quote!');
-  });
+  }
+  const data = await response.json()
+
+  const quoteText = data[0].content
+  const quoteAuthor = data[0].author
+  document.getElementById('random-quote-text').innerHTML = quoteText
+  document.getElementById('random-quote-author').innerHTML = quoteAuthor
+
+  const colorCombo = getRandomColorCombo()
+  randomQuoteGeneratorElement.style.background = 'linear-gradient(45deg, ' + colorCombo[0] + ', ' + colorCombo[1]+ ')'
 }
