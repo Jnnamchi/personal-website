@@ -1,0 +1,32 @@
+#aboutme {
+    text-align: center;
+}
+
+.aboutme-section-description {
+    text-align: justify;
+    margin-top: 40px;
+}
+
+.aboutme-icons {
+    font-size: 25px;
+    margin-top: 45px;
+    margin-bottom: 25px;
+}
+
+.aboutme-icons > a {
+    text-decoration: none;
+}
+
+.aboutme-icon {
+    margin: 10px;
+    color: var(--titleSectionSecondaryColor);
+}
+
+.aboutme-icon:hover {
+    cursor: pointer;
+    color: var(--titleSectionTertiaryColor);
+}
+
+.aboutme-download-link > a {
+    color: black;
+}

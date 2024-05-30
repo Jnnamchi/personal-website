@@ -1,76 +1,123 @@
 <html>
-<body>
-	<div id="title">
-		<h1>Welcome to John's website 2</h1>
-		<p>This is where dreams come true</p>
-		<button onclick="makeDreamComeTrue()">Make dream come true</button>
+<head>
+    <link rel="stylesheet" href="./titlesection/titlesection.css">
+    <link rel="stylesheet" href="./aboutmesection/aboutmesection.css">
+    <link rel="stylesheet" href="./crapsgame/crapsgame.css">
+    <link rel="stylesheet" href="./crapsgame/utils.css">
+    <link rel="stylesheet" href="./randomQuoteGenerator/randomQuoteGenerator.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Armata">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body onload="getNewRandomQuote()">
+	<div class="main-section" id="title">
+		<h1 class="title-section-header">John Nnamchi</h1>
+		<p class="title-section-subtitle">Empowering Individuals Through Education</p>
+		<button class="title-section-button" onclick="makeDreamComeTrue()">COMBINE KNOWLEDGE WITH ACTION</button>
+	</div>
+    <div class="misc-section" id="aboutme">
+        <div class="text-block-container">
+            <h1>About Me</h1>
+            <p class="aboutme-section-description">
+                I am a biochemistry graduate now turned full-time Software Engineer at Bloomberg LP.
+                Throughout my life journey, I realized the true power that software programming and
+                computer engineering skills can give to you. So I created an online course aimed at
+                developing the ability to solve any problem in any domain, with software. With the right
+                guidance and direction, we all have the capacity to grow into the best version of
+                ourselves, live a life of genuine purpose, and impact the people we love. Stay tuned
+                to see the apps I will build below!</p>
+            <div class="aboutme-icons">
+                <a href="https://www.linkedin.com/in/john-nnamchi-03797847/" target="_blank">
+                    <i class="aboutme-icon fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/johnnnamchi/" target="_blank">
+                    <i class="aboutme-icon fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/john.nnamchi/" target="_blank">
+                    <i class="aboutme-icon fab fa-facebook-square"></i>
+                </a>
+                <a href="mailto:john.nnamchi@simvo.io">
+                    <i class="aboutme-icon far fa-envelope"></i>
+                </a>
+            </div>
+            <div class="aboutme-download-link">
+                <a href="./aboutmesection/John_Nnamchi_CV.pdf" download target="_blank">
+                    Download My CV
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="section craps-section">
-        <div class="section-title">
-            Craps Game
-        </div>
-        <div id="craps-registration-pane">
-            <div class="section-subtitle">
-                Enter username to begin
-            </div>
-            <div>
-                <input id="craps-username">
-            </div>
-            <div>
-                <button onclick="registerCrapsPlayer()">Continue</button>
-            </div>
-        </div>
-        <div id="craps-main-pane">
-            <div>
-                User: <span id="craps-username-greeting"></span>
-            </div>
-            <div class="craps-user-stats">
+    <div class="main-section" id="craps-game">
+        <div class="craps-game-title">Craps Casino Game</div>
+        <div class="craps-game-container">
+            <div id="craps-registration-pane">
                 <div>
-                    Money Available: <span id="craps-user-money">1400</span>$
+                    Enter username to begin
                 </div>
                 <div>
-                    Rounds Lasted: <span id="craps-user-rounds">0</span>
+                    <input class="craps-registration-input" id="craps-username-input">
+                </div>
+                <div class="craps-registration-continue" onclick="registerCrapsPlayer()">
+                    Continue
                 </div>
             </div>
-            <div class="craps-bet-setup">
-                <div>
+            <div id="craps-main-section">
+                <div class="craps-main-section-stats">
                     <div>
-                        Bet:
+                        Welcome, <span id="craps-stats-username"></span>
                     </div>
-                    <div id="craps-bet-pass" class="craps-bet-option" onclick="selectBet('PASS')">
-                        PASS
+                    <div id="craps-stats-money-container">
+                        $<span id="craps-stats-money"></span>
                     </div>
-                    <div id="craps-bet-no-pass" class="craps-bet-option" onclick="selectBet('NO PASS')">
-                        NO PASS
-                    </div>
-                </div>
-                <div>
-                    <div>Bet Amount:</div>
                     <div>
-                        <span class="craps-bet-change" onclick="decreaseBet()">-</span>
-                        <span id="craps-bet-amount">100</span>$
-                        <span class="craps-bet-change" onclick="increaseBet()">+</span>
+                        Rounds: <span id="craps-stats-rounds"></span>
+                    </div>
+                </div>
+                <div class="craps-on-table-container">
+                    <div id="craps-roll-dice-button" class="craps-roll-dice-container no-select" onclick="rollDice()">Roll Dice <i class="fas fa-dice"></i></div>
+                    <div id="craps-roll-dice-animation-container"></div>
+                </div>
+                <div class="craps-round-manager no-select">
+                    <div id="craps-betting-grid-container">
+                        <div class="craps-betting-grid no-select">
+                            <div class="craps-bet-button" id="EVEN" onclick="betEven()">
+                                EVEN
+                            </div>
+                            <div class="craps-bet-amount-container">
+                                <span class="craps-user-bet-amount-change" onclick="decreaseBet()">-</span>
+                                <span id="craps-user-bet-amount">$100</span>
+                                <span class="craps-user-bet-amount-change" onclick="increaseBet()">+</span>
+                            </div>
+                            <div class="craps-bet-button" id="ODD" onclick="betOdd()">
+                                ODD
+                            </div>
+                        </div>
+                    </div>
+                    <div id="craps-round-finish-grid-container">
+                        <div class="craps-round-finish-grid no-select">
+                            <div id="craps-next-round-button" class="craps-round-finish-button" onclick="setupNextRound()">
+                                NEXT ROUND
+                            </div>
+                            <div id="craps-next-round-button-disabled" class="craps-round-finish-button">
+                                NEXT ROUND
+                            </div>
+                            <div id="craps-round-finish-message">
+                                YOU WIN!
+                            </div>
+                            <div class="craps-round-finish-button" onclick="exitGame()">
+                                EXIT GAME
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="craps-dice-info">
-                <div id="dice-roll-area"></div>
-                <div>
-                    <span id="dice-roll-result"></span>
-                </div>
-            </div>
-            <div class="craps-bet-outcome">
-                <div>
-                    <span id="craps-result-description"></span>
-                </div>
-                <div id="craps-action-roll">
-                    <button onclick="doFirstRoll()">ROLL</button>
-                </div>
-                <div id="craps-action-continue-exit">
-                    <button onclick="setupRound()">NEXT ROUND</button>
-                    <button onclick="endGame()">EXIT</button>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="main-section" id="random-quote-generator">
+        <div>
+            <div id="random-quote-title">RANDOM QUOTE GENERATOR</div>
+            <div id="random-quote-text"></div>
+            <div id="random-quote-author"></div>
+            <div id="new-random-quote" onclick="getNewRandomQuote()">New Quote</div>
         </div>
     </div>
 </body>
@@ -78,100 +125,49 @@
 
 <style>
 
-body {
-	background-image: url("https://iso.500px.com/wp-content/uploads/2014/07/big-one.jpg");
-	background-size: cover;
+* {
+  box-sizing: border-box;
+  font-family: 'Armata';
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
+html, body {
+    margin: 0px;
+    padding: 0px;
 }
 
-h1 {
-	color: blue;
-}
-
-button:hover {
-	background-color: red;
-	cursor: pointer;
-	font-size: 20px;
-}
-
-#title {
-	width: 100%;
-	text-align: center;
-	margin-top: 50px;
-}
-
-.section {
-    width: 100%;
-    border: solid white 1px;
+.main-section {
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
     padding: 25px;
-    box-sizing: border-box;
 }
 
-.section-title {
-    font-size: 25px;
-    color: white;
-    margin-bottom: 15px;
+.misc-section {
+    width: 100vw;
+    padding: 120px 25px;
 }
 
-.craps-section {
-    color: white;
+.text-block-container {
+    width: 65%;
+    margin: 0 auto;
 }
 
-#craps-main-pane {
-    display: none;
-}
-
-.craps-bet-option {
-    border: solid white 1px;
-    border-radius: 5px;
-    width: 100px;
-    text-align: center;
-    padding: 10px;
-    display: inline-block;
-}
-
-.craps-bet-option:hover {
-    cursor: pointer;
-    background-color: red !important;
-}
-
-#craps-bet-amount {
-    user-select: none;
-}
-
-.craps-bet-change {
-    margin: 0 10px;
-    font-size: 24px;
-    user-select: none;
-}
-
-.craps-bet-change:hover {
-    cursor: pointer;
-}
-
-#dice-roll-area {
-    width: 200px;
-    height: 200px;
-    background-color: green;
-}
-
-#craps-action-continue-exit {
-    display: none;
+@media screen and (max-width: 500px) {
+    .text-block-container {
+        width: 100%;
+    }
 }
 
 </style>
 
-<script type="text/javascript" src="https://unpkg.com/roll-a-die@1.3.0/dist/roll-a-die.js"></script>
-<script type="text/javascript" src="craps-game/craps.js"></script>
+<script src="./crapsgame/crapsgame.js"></script>
+<script src="./randomQuoteGenerator/randomQuoteGenerator.js"></script>
+<script type="text/javascript" src="https://unpkg.com/roll-a-die@2.0.1/dist/roll-a-die.js"></script>
 <script>
 
 function makeDreamComeTrue () {
 	document.body.style.background = 'url("https://media.giphy.com/media/HhTXt43pk1I1W/200.gif")'
-	document.getElementById('title').style.display = 'none'
+	document.getElementById("title").style.visibility = "hidden"
 }
 
 </script>
