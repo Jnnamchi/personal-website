@@ -19,14 +19,27 @@ function getRandomColorCombo () {
 }
 
 async function getNewRandomQuote () {
-  const response = await fetch('https://api.quotable.io/quotes/random')
-  if (!response.ok) {
-    alert('There was a problem getting a new quote!');
+  let quoteText = ''
+  let quoteAuthor = ''
+  try {
+    const response = await fetch('https://api.quotable.io/quotes/random')
+    if (!response.ok) {
+      throw new Error('Could not get quote!');
+    }
+    const data = await response.json()
+    quoteText = data[0].content
+    quoteAuthor = data[0].author
+  } catch (e) {
+    const response = await fetch('https://type.fit/api/quotes')
+    if (!response.ok) {
+      alert('Could not get quote!');
+    }
+    const data = await response.json()
+    const randomIndex = Math.floor(Math.random() * data.length);
+    quoteText = data[randomIndex].text
+    quoteAuthor = data[randomIndex].author
   }
-  const data = await response.json()
 
-  const quoteText = data[0].content
-  const quoteAuthor = data[0].author
   document.getElementById('random-quote-text').innerHTML = quoteText
   document.getElementById('random-quote-author').innerHTML = quoteAuthor
 
