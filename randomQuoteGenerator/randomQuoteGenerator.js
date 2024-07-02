@@ -37,7 +37,7 @@ async function getNewRandomQuote () {
     const data = await response.json()
     const randomIndex = Math.floor(Math.random() * data.length);
     quoteText = data[randomIndex].text
-    quoteAuthor = data[randomIndex].author
+    quoteAuthor = data[randomIndex].author.split(',')[0]
   }
 
   document.getElementById('random-quote-text').innerHTML = quoteText
