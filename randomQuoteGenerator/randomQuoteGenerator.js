@@ -19,14 +19,36 @@ function getRandomColorCombo () {
 }
 
 async function getNewRandomQuote () {
-  const response = await fetch('https://api.quotable.io/quotes/random')
-  if (!response.ok) {
-    alert('There was a problem getting a new quote!');
-  }
-  const data = await response.json()
+  let quoteText = ''
+  let quoteAuthor = ''
+  try {
+    const url = 'https://quotes15.p.rapidapi.com/quotes/random/?language_code=en';
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '45299eefccmsh112abc56183e713p148d73jsnab641ffaf2f8',
+        'x-rapidapi-host': 'quotes15.p.rapidapi.com'
+      }
+    };
 
-  const quoteText = data[0].content
-  const quoteAuthor = data[0].author
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error('Could not get quote!');
+    }
+    const data = await response.json()
+    quoteText = data.content
+    quoteAuthor = data.originator.name
+  } catch (e) {
+    const response = await fetch('https://type.fit/api/quotes')
+    if (!response.ok) {
+      alert('Could not get quote!');
+    }
+    const data = await response.json()
+    const randomIndex = Math.floor(Math.random() * data.length);
+    quoteText = data[randomIndex].text
+    quoteAuthor = data[randomIndex].author.split(',')[0]
+  }
+
   document.getElementById('random-quote-text').innerHTML = quoteText
   document.getElementById('random-quote-author').innerHTML = quoteAuthor
 
