@@ -8,6 +8,7 @@ export async function analyzeStock (stockSymbolToAnalyze: string) {
   const response = await fetch(url)
   if (!response.ok) {
     alert('There was a problem getting the analysis for your stock!');
+    return
   }
   const data = await response.json()
   return data
