@@ -26,3 +26,14 @@ export const VerticalAlignContent = styled.div`
   display: table-cell;
   vertical-align: middle;
 `
+
+export const DashboardGridContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  border: solid red 1px;
+`
+export const DashboardGridContent = styled.div`
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+`
