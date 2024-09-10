@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build --base=/",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -13,10 +13,12 @@
     "chart.js": "^4.4.4",
     "gridstack": "^10.3.1",
     "numabbr": "^1.0.2",
+    "path": "^0.12.7",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
-    "react-loader-spinner": "^6.1.6"
+    "react-loader-spinner": "^6.1.6",
+    "vite-plugin-static-copy": "^1.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
